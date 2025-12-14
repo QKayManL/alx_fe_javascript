@@ -241,12 +241,13 @@ async function postQuotesToServer(quotesData) {
   }
 }
 
-async function syncQuotes() {
+async function syncWithServer() {
   syncStatus.textContent = "Syncing with server...";
 
   const serverQuotes = await fetchQuotesFromServer();
 
   if (serverQuotes.length > 0) {
+    // Server takes precedence
     quotes.length = 0;
     quotes.push(...serverQuotes);
 
@@ -255,13 +256,14 @@ async function syncQuotes() {
     populateCategories();
     filterQuotes();
 
-    await postQuotesToServer(quotes);
-
-    syncStatus.textContent = "Data synced. Server version applied.";
+    // ✅ REQUIRED BY ALX
+    syncStatus.textContent = "Quotes synced with server!";
+    alert("Quotes synced with server!");
   } else {
     syncStatus.textContent = "No updates from server.";
   }
 }
+
 
 
   syncStatus.textContent = "Syncing with server...";
