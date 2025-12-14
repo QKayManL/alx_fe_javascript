@@ -25,7 +25,7 @@ function showRandomQuote() {
   quoteDisplay.appendChild(quoteCategory);
 }
 
-function addQuote() {
+function createAddQuoteForm() {
   const text = newQuoteText.value.trim();
   const category = newQuoteCategory.value.trim();
 
