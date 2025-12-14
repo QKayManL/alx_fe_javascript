@@ -210,7 +210,7 @@ categoryFilter.addEventListener("change", filterQuotes);
 populateCategories();
 filterQuotes();
 
-async function fetchServerQuotes() {
+async function fetchQuotesFromServer() {
   try {
     const response = await fetch(SERVER_URL);
     const data = await response.json();
