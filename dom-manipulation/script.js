@@ -225,7 +225,45 @@ async function fetchQuotesFromServer() {
     return [];
   }
 }
-async function syncWithServer() {
+async function postQuotesToServer(quotesData) {
+  try {
+    await fetch(SERVER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(quotesData)
+    });
+
+    console.log("Quotes posted to server");
+  } catch (error) {
+    console.error("Failed to post quotes:", error);
+  }
+}
+
+async function syncQuotes() {
+  syncStatus.textContent = "Syncing with server...";
+
+  const serverQuotes = await fetchQuotesFromServer();
+
+  if (serverQuotes.length > 0) {
+    quotes.length = 0;
+    quotes.push(...serverQuotes);
+
+    localStorage.setItem("quotes", JSON.stringify(quotes));
+
+    populateCategories();
+    filterQuotes();
+
+    await postQuotesToServer(quotes);
+
+    syncStatus.textContent = "Data synced. Server version applied.";
+  } else {
+    syncStatus.textContent = "No updates from server.";
+  }
+}
+
+
   syncStatus.textContent = "Syncing with server...";
 
   const serverQuotes = await fetchServerQuotes();
@@ -246,4 +284,5 @@ async function syncWithServer() {
     syncStatus.textContent = "No updates from server.";
   }
 }
-setInterval(syncWithServer, 15000); // every 15 seconds
+setInterval(syncQuotes, 15000);
+
