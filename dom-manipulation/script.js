@@ -1,11 +1,13 @@
-const quotes = [
-  { text: "Code is poetry.", category: "Programming" },
-  { text: "Consistency beats motivation.", category: "Discipline" },
-  { text: "Start small. Think big.", category: "Growth" }
-];
-
 const quoteDisplay = document.getElementById("quoteDisplay");
 const newQuoteBtn = document.getElementById("newQuote");
+const newQuoteText = document.getElementById("newQuoteText");
+const newQuoteCategory = document.getElementById("newQuoteCategory");
+
+const quotes = [
+  { text: "Code is poetry.", category: "Programming" },
+  { text: "Simplicity is the soul of efficiency.", category: "Design" },
+  { text: "First, solve the problem. Then, write the code.", category: "Development" }
+];
 
 function displayRandomQuote() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
@@ -24,21 +26,18 @@ function displayRandomQuote() {
 }
 
 function addQuote() {
-  const textInput = document.getElementById("newQuoteText");
-  const categoryInput = document.getElementById("newQuoteCategory");
+  const text = newQuoteText.value.trim();
+  const category = newQuoteCategory.value.trim();
 
-  const text = textInput.value.trim();
-  const category = categoryInput.value.trim();
-
-  if (!text || !category) {
+  if (text === "" || category === "") {
     alert("Please enter both quote and category.");
     return;
   }
 
   quotes.push({ text, category });
 
-  textInput.value = "";
-  categoryInput.value = "";
+  newQuoteText.value = "";
+  newQuoteCategory.value = "";
 
   displayRandomQuote();
 }
