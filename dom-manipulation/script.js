@@ -3,6 +3,9 @@ const newQuoteBtn = document.getElementById("newQuote");
 const newQuoteText = document.getElementById("newQuoteText");
 const newQuoteCategory = document.getElementById("newQuoteCategory");
 const importFileInput = document.getElementById("importFile");
+const SERVER_URL = "https://jsonplaceholder.typicode.com/posts";
+const syncStatus = document.getElementById("syncStatus");
+
 
 // Load quotes from localStorage OR fallback to default
 let quotes = JSON.parse(localStorage.getItem("quotes")) || [
@@ -207,3 +210,40 @@ categoryFilter.addEventListener("change", filterQuotes);
 populateCategories();
 filterQuotes();
 
+async function fetchServerQuotes() {
+  try {
+    const response = await fetch(SERVER_URL);
+    const data = await response.json();
+
+    // Simulate server quotes structure
+    return data.slice(0, 5).map(item => ({
+      text: item.title,
+      category: "Server"
+    }));
+  } catch (error) {
+    console.error("Server fetch failed:", error);
+    return [];
+  }
+}
+async function syncWithServer() {
+  syncStatus.textContent = "Syncing with server...";
+
+  const serverQuotes = await fetchServerQuotes();
+
+  if (serverQuotes.length > 0) {
+    // SERVER TAKES PRECEDENCE
+    quotes.length = 0;
+    quotes.push(...serverQuotes);
+
+    // Persist update
+    localStorage.setItem("quotes", JSON.stringify(quotes));
+
+    populateCategories();
+    displayRandomQuote();
+
+    syncStatus.textContent = "Data synced. Server version applied.";
+  } else {
+    syncStatus.textContent = "No updates from server.";
+  }
+}
+setInterval(syncWithServer, 15000); // every 15 seconds

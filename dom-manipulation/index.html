@@ -8,6 +8,10 @@
 <body>
 
   <h1>Dynamic Quote Generator</h1>
+  <select id="categoryFilter">
+  <option value="all">All Categories</option>
+</select>
+
 
   <div id="quoteDisplay"></div>
 
@@ -38,6 +42,8 @@
   accept=".json"
   onchange="importFromJsonFile(event)"
 />
+<p id="syncStatus" style="font-size: 0.9rem; color: green;"></p>
+
 
 </body>
 </html>
