@@ -9,7 +9,7 @@ const quotes = [
   { text: "First, solve the problem. Then, write the code.", category: "Development" }
 ];
 
-function displayRandomQuote() {
+function showRandomQuote() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const quote = quotes[randomIndex];
 
